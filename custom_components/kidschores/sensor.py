@@ -184,6 +184,11 @@ async def async_setup_entry(
             CompletedChoresMonthlySensor(coordinator, entry, kid_id, kid_name)
         )
 
+        # Required chores completed by each Kid this week (for allowance tracking)
+        entities.append(
+            RequiredChoresCompletedWeeklySensor(coordinator, entry, kid_id, kid_name)
+        )
+
         # Badges Obtained by each Kid
         entities.append(KidBadgesSensor(coordinator, entry, kid_id, kid_name))
 
@@ -654,6 +659,85 @@ class CompletedChoresMonthlySensor(CoordinatorEntity, SensorEntity):
         """Return the number of chores completed this month."""
         kid_info = self.coordinator.kids_data.get(self._kid_id, {})
         return kid_info.get("completed_chores_monthly", 0)
+
+
+# ------------------------------------------------------------------------------------------
+class RequiredChoresCompletedWeeklySensor(CoordinatorEntity, SensorEntity):
+    """Count how many Required chores the kid completed this week."""
+
+    _attr_has_entity_name = True
+    _attr_translation_key = "required_chores_completed_weekly_sensor"
+
+    def __init__(self, coordinator, entry, kid_id, kid_name):
+        """Initialize the sensor."""
+        super().__init__(coordinator)
+        self._kid_id = kid_id
+        self._kid_name = kid_name
+        self._attr_unique_id = f"{entry.entry_id}_{kid_id}_required_completed_weekly"
+        self._attr_native_unit_of_measurement = "chores"
+        self._attr_translation_placeholders = {"kid_name": kid_name}
+        self.entity_id = f"sensor.kc_{kid_name}_required_chores_completed_weekly"
+
+    @property
+    def native_value(self):
+        """Return the number of Required chores completed this week."""
+        completed = 0
+        total = 0
+
+        # Iterate through all chores assigned to this kid
+        for chore_id, chore_info in self.coordinator.chores_data.items():
+            # Skip if not assigned to this kid
+            if self._kid_id not in chore_info.get("assigned_kids", []):
+                continue
+
+            # Check if chore has "Required" label
+            labels = chore_info.get("chore_labels", [])
+            if "Required" not in labels:
+                continue
+
+            total += 1
+
+            # Check completion status for this kid this week
+            kid_info = self.coordinator.kids_data.get(self._kid_id, {})
+            chore_approvals_weekly = kid_info.get("chore_approvals_weekly", {})
+
+            # If this chore was approved at least once this week, count it
+            if chore_approvals_weekly.get(chore_id, 0) > 0:
+                completed += 1
+
+        return completed
+
+    @property
+    def extra_state_attributes(self):
+        """Provide total Required chores and completion rate."""
+        total = 0
+        completed = 0
+
+        for chore_id, chore_info in self.coordinator.chores_data.items():
+            if self._kid_id not in chore_info.get("assigned_kids", []):
+                continue
+
+            labels = chore_info.get("chore_labels", [])
+            if "Required" not in labels:
+                continue
+
+            total += 1
+
+            kid_info = self.coordinator.kids_data.get(self._kid_id, {})
+            chore_approvals_weekly = kid_info.get("chore_approvals_weekly", {})
+
+            if chore_approvals_weekly.get(chore_id, 0) > 0:
+                completed += 1
+
+        completion_rate = (completed / total * 100) if total > 0 else 0
+        all_required_done = (completed == total) if total > 0 else False
+
+        return {
+            "total_required": total,
+            "completed": completed,
+            "completion_rate": round(completion_rate, 1),
+            "all_required_done": all_required_done,
+        }
 
 
 # DEPRECATE --------------------------------------------------------------------------------

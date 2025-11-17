@@ -1,0 +1,86 @@
+# Allowance System Configuration
+# Uses the new RequiredChoresCompletedWeeklySensor for 100% reliable tracking
+#
+# Add this to /config/configuration.yaml:
+#   template: !include home-config/config/allowance_system.yaml
+
+- sensor:
+    # Bella's Weekly Allowance
+    - name: "Bella Weekly Allowance"
+      unique_id: bella_weekly_allowance
+      unit_of_measurement: "$"
+      state_class: measurement
+      icon: mdi:cash-multiple
+      state: >
+        {# Get total points and Required completion status #}
+        {% set total_points = states('sensor.kc_bella_points') | int(0) %}
+        {% set required_sensor = 'sensor.kc_bella_required_chores_completed_weekly' %}
+        {% set all_required_done = state_attr(required_sensor, 'all_required_done') | default(false) %}
+
+        {# Base $10 ONLY if ALL Required chores completed #}
+        {% set base = 10 if all_required_done else 0 %}
+
+        {# Bonus: ALL points × $0.25 #}
+        {% set bonus = total_points * 0.25 %}
+
+        {# Total allowance #}
+        {{ (base + bonus) | round(2) }}
+      attributes:
+        base_allowance: >
+          {% set required_sensor = 'sensor.kc_bella_required_chores_completed_weekly' %}
+          {% set all_required_done = state_attr(required_sensor, 'all_required_done') | default(false) %}
+          {{ 10 if all_required_done else 0 }}
+        base_unlocked: >
+          {% set required_sensor = 'sensor.kc_bella_required_chores_completed_weekly' %}
+          {{ state_attr(required_sensor, 'all_required_done') | default(false) }}
+        bonus_earned: >
+          {% set total_points = states('sensor.kc_bella_points') | int(0) %}
+          {{ (total_points * 0.25) | round(2) }}
+        total_points: "{{ states('sensor.kc_bella_points') | int(0) }}"
+        required_completed: "{{ states('sensor.kc_bella_required_chores_completed_weekly') | int(0) }}"
+        required_total: >
+          {% set required_sensor = 'sensor.kc_bella_required_chores_completed_weekly' %}
+          {{ state_attr(required_sensor, 'total_required') | int(0) }}
+        completion_rate: >
+          {% set required_sensor = 'sensor.kc_bella_required_chores_completed_weekly' %}
+          {{ state_attr(required_sensor, 'completion_rate') | float(0) }}%
+
+    # Lilly's Weekly Allowance
+    - name: "Lilly Weekly Allowance"
+      unique_id: lilly_weekly_allowance
+      unit_of_measurement: "$"
+      state_class: measurement
+      icon: mdi:cash-multiple
+      state: >
+        {# Get total points and Required completion status #}
+        {% set total_points = states('sensor.kc_lilly_points') | int(0) %}
+        {% set required_sensor = 'sensor.kc_lilly_required_chores_completed_weekly' %}
+        {% set all_required_done = state_attr(required_sensor, 'all_required_done') | default(false) %}
+
+        {# Base $10 ONLY if ALL Required chores completed #}
+        {% set base = 10 if all_required_done else 0 %}
+
+        {# Bonus: ALL points × $0.25 #}
+        {% set bonus = total_points * 0.25 %}
+
+        {# Total allowance #}
+        {{ (base + bonus) | round(2) }}
+      attributes:
+        base_allowance: >
+          {% set required_sensor = 'sensor.kc_lilly_required_chores_completed_weekly' %}
+          {% set all_required_done = state_attr(required_sensor, 'all_required_done') | default(false) %}
+          {{ 10 if all_required_done else 0 }}
+        base_unlocked: >
+          {% set required_sensor = 'sensor.kc_lilly_required_chores_completed_weekly' %}
+          {{ state_attr(required_sensor, 'all_required_done') | default(false) }}
+        bonus_earned: >
+          {% set total_points = states('sensor.kc_lilly_points') | int(0) %}
+          {{ (total_points * 0.25) | round(2) }}
+        total_points: "{{ states('sensor.kc_lilly_points') | int(0) }}"
+        required_completed: "{{ states('sensor.kc_lilly_required_chores_completed_weekly') | int(0) }}"
+        required_total: >
+          {% set required_sensor = 'sensor.kc_lilly_required_chores_completed_weekly' %}
+          {{ state_attr(required_sensor, 'total_required') | int(0) }}
+        completion_rate: >
+          {% set required_sensor = 'sensor.kc_lilly_required_chores_completed_weekly' %}
+          {{ state_attr(required_sensor, 'completion_rate') | float(0) }}%

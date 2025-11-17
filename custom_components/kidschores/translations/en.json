@@ -1143,6 +1143,9 @@
       "chores_completed_monthly_sensor": {
         "name": "{kid_name} - Chores Completed - Monthly"
       },
+      "required_chores_completed_weekly_sensor": {
+        "name": "{kid_name} - Required Chores Completed - Weekly"
+      },
       "kid_badges_sensor": {
         "name": "{kid_name} - Badges Earned"
       },
