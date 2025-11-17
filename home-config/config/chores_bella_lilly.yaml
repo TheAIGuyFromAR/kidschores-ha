@@ -375,7 +375,7 @@ chores:
     applicable_days: ["tue", "fri"]
     description: "Water outdoor plants and garden (summer only)"
     icon: "mdi:watering-can"
-    labels: ["Seasonal", "Garden"]
+    labels: ["Required", "Seasonal", "Garden"]
 
   - name: "Harvest Vegetables"
     assigned_kids: ["Bella", "Lilly"]
