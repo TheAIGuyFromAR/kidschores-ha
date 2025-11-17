@@ -29,7 +29,9 @@ CHORE_STATE_PENDING = "pending"
 CHORES_DATA = {
     "kids": [
         {"name": "Bella"},
-        {"name": "Lilly"}
+        {"name": "Lilly"},
+        {"name": "Blake"},    # Parent - tracked with 0 points
+        {"name": "Amanda"}    # Parent - tracked with 0 points
     ],
     "chores": [
         # ========== DAILY CHORES ==========
@@ -118,6 +120,28 @@ CHORES_DATA = {
             "applicable_days": ["mon", "tue", "thu", "fri"]
         },
 
+        # ========== DAILY PARENT CHORES ==========
+        {
+            "name": "Pet Water Refresh",
+            "assigned_kids": ["Blake", "Amanda"],
+            "points": 0,
+            "frequency": "daily",
+            "due_time": "09:00",
+            "description": "Refresh water bowls for dog and cat",
+            "icon": "mdi:water-circle",
+            "labels": ["Parent", "Daily", "Pets"]
+        },
+        {
+            "name": "Dog Evening Meal",
+            "assigned_kids": ["Blake", "Amanda"],
+            "points": 0,
+            "frequency": "daily",
+            "due_time": "18:00",
+            "description": "Feed dog evening meal",
+            "icon": "mdi:dog-side",
+            "labels": ["Parent", "Daily", "Pets"]
+        },
+
         # ========== WEEKLY CHORES ==========
         {
             "name": "Laundry - Bella",
@@ -173,6 +197,31 @@ CHORES_DATA = {
             "description": "Sweep kitchen and entry areas",
             "icon": "mdi:broom",
             "labels": ["Bonus", "Weekly", "Floors"]
+        },
+
+        # ========== WEEKLY PARENT CHORES ==========
+        {
+            "name": "Litter Waste Bin",
+            "assigned_kids": ["Blake"],
+            "points": 0,
+            "frequency": "weekly",
+            "due_time": "18:00",
+            "applicable_days": ["sun"],
+            "description": "Empty litter waste bin to outdoor trash",
+            "icon": "mdi:delete-variant",
+            "labels": ["Parent", "Weekly", "Pets"]
+        },
+
+        # ========== MONTHLY PARENT CHORES ==========
+        {
+            "name": "Pip Environment Check",
+            "assigned_kids": ["Blake", "Amanda"],
+            "points": 0,
+            "frequency": "monthly",
+            "due_time": "14:00",
+            "description": "Check temperature, humidity, and overall habitat health",
+            "icon": "mdi:thermometer-lines",
+            "labels": ["Parent", "Monthly", "Pets", "Pip"]
         },
 
         # Add more chores here...

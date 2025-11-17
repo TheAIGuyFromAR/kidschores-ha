@@ -64,10 +64,11 @@ ha core restart
 ### Configuration Files
 
 **[config/chores_bella_lilly.yaml](config/chores_bella_lilly.yaml)**
-- 30+ pre-configured chores for Bella & Lilly
+- 40+ pre-configured chores for Bella, Lilly, Blake & Amanda
 - Daily, weekly, biweekly, monthly, and seasonal tasks
 - Points, icons, labels, recurrence all configured
 - Custody-aware (Bella-only weeks, Lilly away weeks)
+- Parent chores tracked with 0 points (Blake & Amanda)
 - Ready to import with script
 
 ### Scripts
@@ -125,14 +126,18 @@ After MVP, we'll add:
 ### Kids & Constraints
 - **Bella:** Always gone Wednesdays
 - **Lilly:** Gone every other week (whole week)
+- **Blake:** Parent (tracked with 0 points)
+- **Amanda:** Parent (tracked with 0 points)
 
 ### Chore Categories
-- **Daily:** 8 chores (blinds, lights, pets, litter)
-- **Weekly:** 12 chores (laundry, rooms, bathroom, floors)
+- **Daily - Kids:** 8 chores (blinds, lights, pets, litter)
+- **Daily - Parents:** 2 chores (pet water, dog evening meal)
+- **Weekly - Kids:** 11 chores (laundry, rooms, bathroom, floors)
+- **Weekly - Parents:** 1 chore (litter waste bin)
 - **Bi-weekly:** 2 chores (toilet, sink rotation)
-- **Monthly:** 15 chores (bathroom deep clean, sheets, Pip habitat)
-- **Seasonal:** 5 chores (garden, solar)
-- **Parent-only:** 8 chores (maintenance tasks)
+- **Monthly - Kids:** 8 chores (bathroom deep clean, sheets, Pip habitat)
+- **Monthly - Parents:** 1 chore (Pip environment check)
+- **Seasonal:** 2 chores (garden watering, harvest)
 
 ### Allowance System
 ```
